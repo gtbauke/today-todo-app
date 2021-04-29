@@ -7,6 +7,10 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "androidNavigationBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#f4f6fd"
+    }
   }
 }
