@@ -1,9 +1,9 @@
 {
-  "name": "mobile",
-  "displayName": "mobile",
+  "name": "today",
+  "displayName": "Today",
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "today",
+    "slug": "today",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
