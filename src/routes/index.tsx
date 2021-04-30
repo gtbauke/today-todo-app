@@ -5,11 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Home } from '../screens/Home';
 import { Task } from '../screens/Task';
 import { Header } from '../components/Header';
-
-type StackParamList = {
-  Home: undefined;
-  Task: undefined; // ?: change this later
-};
+import { CreateTask } from '../screens/CreateTask';
+import { StackParamList } from './MainRoutes';
 
 const StackNavigator = createStackNavigator<StackParamList>();
 
@@ -24,6 +21,7 @@ export const Routes = (): JSX.Element => {
       >
         <StackNavigator.Screen name="Home" component={Home} />
         <StackNavigator.Screen name="Task" component={Task} />
+        <StackNavigator.Screen name="CreateTask" component={CreateTask} />
       </StackNavigator.Navigator>
     </NavigationContainer>
   );

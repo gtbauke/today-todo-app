@@ -4,7 +4,7 @@ import { View, Platform, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 
-import { useStyle } from '../../styles/Style';
+import { useStyle } from '../styles/Style';
 
 export const Header = (props: StackHeaderProps): JSX.Element => {
   const styles = useStyle(theme => ({

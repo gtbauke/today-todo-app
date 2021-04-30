@@ -38,4 +38,18 @@ export const tasks: Task[] = [
     completed: true,
     dueDate: new Date(),
   },
+  {
+    id: '35b7306b-adff-44b4-8c2a-387483338022',
+    title: 'Buy Dead Cells',
+    description: '',
+    completed: false,
+    dueDate: new Date(),
+  },
+  {
+    id: '6f36b67a-87f6-4c19-87d9-7849731a4c9a',
+    title: 'Call Dad',
+    description: '',
+    completed: true,
+    dueDate: new Date(),
+  },
 ];
