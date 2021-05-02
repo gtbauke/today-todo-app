@@ -28,6 +28,7 @@ export const Button = ({
       alignItems: 'center',
       width: 0.75 * width,
       height: 48,
+      elevation: 3,
     },
   }));
 

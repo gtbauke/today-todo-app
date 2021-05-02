@@ -64,6 +64,7 @@ export const Input = forwardRef<TextInput, InputProps>(
         position: 'relative',
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
+        elevation: 3,
       },
 
       textInput: {
