@@ -11,6 +11,9 @@
     "androidNavigationBar": {
       "barStyle": "dark-content",
       "backgroundColor": "#f4f6fd"
+    },
+    "experiments": {
+      "turboModules": true
     }
   }
 }
