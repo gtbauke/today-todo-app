@@ -1,12 +1,12 @@
 import { User } from '../models/User';
 import { api } from './api';
 
-interface LoginResponse {
+export interface LoginResponse {
   user: User;
   token: string;
 }
 
-interface AuthResponse<Data> {
+export interface AuthResponse<Data> {
   data?: Data;
   errors?: string[];
 }
@@ -28,6 +28,6 @@ export const auth = {
       return { errors: [message] };
     }
 
-    return { data };
+    return { data: data.data };
   },
 };

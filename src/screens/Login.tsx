@@ -14,7 +14,7 @@ import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { Spacing } from '../components/Spacing';
-import { auth } from '../services/AuthService';
+import { AuthContext } from '../contexts/AuthContext';
 
 export const Login = (): JSX.Element => {
   const styles = useStyle(theme => ({
@@ -74,12 +74,14 @@ export const Login = (): JSX.Element => {
 
   const passwordRef = useRef<TextInput>(null);
 
+  const { login } = useContext(AuthContext);
+
   const handleEmailBlur = () => {
     passwordRef.current?.focus();
   };
 
-  const handleLoginButtonPress = async () => {
-    const { data, errors } = await auth.login(email, password);
+  const handleLogin = async () => {
+    const { data, errors } = await login({ email, password });
 
     if (errors) {
       console.log(errors);
@@ -126,7 +128,7 @@ export const Login = (): JSX.Element => {
         <Spacing size={64} />
         <Button
           rippleColor={defaultTheme.colors.primary[700]}
-          onPress={handleLoginButtonPress}
+          onPress={handleLogin}
         >
           <Text style={styles.text}>Login</Text>
         </Button>
