@@ -106,11 +106,13 @@ export const Input = forwardRef<TextInput, InputProps>(
     const handleInputBlur = (
       event: NativeSyntheticEvent<TextInputFocusEventData>,
     ) => {
-      placeholderLeft.value = withTiming(8, { duration: animationDuration });
-      placeholderTop.value = withTiming(8, { duration: animationDuration });
-      placeholderSize.value = withTiming(defaultTheme.fontSizes.md, {
-        duration: animationDuration,
-      });
+      if (!value) {
+        placeholderLeft.value = withTiming(8, { duration: animationDuration });
+        placeholderTop.value = withTiming(8, { duration: animationDuration });
+        placeholderSize.value = withTiming(defaultTheme.fontSizes.md, {
+          duration: animationDuration,
+        });
+      }
 
       setIsFocused(false);
       onBlur?.(event);

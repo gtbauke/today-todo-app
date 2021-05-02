@@ -14,6 +14,7 @@ import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { ThemeContext } from '../contexts/ThemeContext';
 import { Spacing } from '../components/Spacing';
+import { auth } from '../services/AuthService';
 
 export const Login = (): JSX.Element => {
   const styles = useStyle(theme => ({
@@ -77,6 +78,18 @@ export const Login = (): JSX.Element => {
     passwordRef.current?.focus();
   };
 
+  const handleLoginButtonPress = async () => {
+    const { data, errors } = await auth.login(email, password);
+
+    if (errors) {
+      console.log(errors);
+    }
+
+    if (data) {
+      console.log(data);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome</Text>
@@ -111,7 +124,10 @@ export const Login = (): JSX.Element => {
           autoCompleteType="off"
         />
         <Spacing size={64} />
-        <Button rippleColor={defaultTheme.colors.primary[700]}>
+        <Button
+          rippleColor={defaultTheme.colors.primary[700]}
+          onPress={handleLoginButtonPress}
+        >
           <Text style={styles.text}>Login</Text>
         </Button>
         <Spacing size={8} />
