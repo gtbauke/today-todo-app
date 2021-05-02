@@ -25,7 +25,7 @@ interface Props {
 
 type InputProps = Props & TextInputProps;
 
-// export const Input = (;
+const animationDuration = 150;
 
 export const Input = forwardRef<TextInput, InputProps>(
   (
@@ -62,6 +62,8 @@ export const Input = forwardRef<TextInput, InputProps>(
         borderBottomWidth: 2,
         paddingHorizontal: 8,
         position: 'relative',
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
       },
 
       textInput: {
@@ -91,10 +93,10 @@ export const Input = forwardRef<TextInput, InputProps>(
     const handleInputFocus = (
       event: NativeSyntheticEvent<TextInputFocusEventData>,
     ) => {
-      placeholderLeft.value = withTiming(4, { duration: 250 });
-      placeholderTop.value = withTiming(4, { duration: 250 });
+      placeholderLeft.value = withTiming(4, { duration: animationDuration });
+      placeholderTop.value = withTiming(4, { duration: animationDuration });
       placeholderSize.value = withTiming(10, {
-        duration: 250,
+        duration: animationDuration,
       });
 
       setIsFocused(true);
@@ -104,10 +106,10 @@ export const Input = forwardRef<TextInput, InputProps>(
     const handleInputBlur = (
       event: NativeSyntheticEvent<TextInputFocusEventData>,
     ) => {
-      placeholderLeft.value = withTiming(8, { duration: 250 });
-      placeholderTop.value = withTiming(8, { duration: 250 });
+      placeholderLeft.value = withTiming(8, { duration: animationDuration });
+      placeholderTop.value = withTiming(8, { duration: animationDuration });
       placeholderSize.value = withTiming(defaultTheme.fontSizes.md, {
-        duration: 250,
+        duration: animationDuration,
       });
 
       setIsFocused(false);

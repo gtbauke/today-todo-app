@@ -1,18 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import {
   View,
-  Text,
   StatusBar,
   Platform,
   TextInput,
-  Dimensions,
+  KeyboardAvoidingView,
+  Text,
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useStyle } from '../styles/Style';
 import { Input } from '../components/Input';
-
-const { width, height } = Dimensions.get('screen');
+import { Button } from '../components/Button';
+import { ThemeContext } from '../contexts/ThemeContext';
+import { Spacing } from '../components/Spacing';
 
 export const Login = (): JSX.Element => {
   const styles = useStyle(theme => ({
@@ -20,7 +21,7 @@ export const Login = (): JSX.Element => {
       marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
       backgroundColor: theme.colors.white,
       flex: 1,
-      paddingVertical: 16,
+      paddingVertical: 64,
       paddingHorizontal: 32,
     },
 
@@ -36,13 +37,35 @@ export const Login = (): JSX.Element => {
       fontWeight: 'bold',
     },
 
+    text: {
+      color: theme.colors.white,
+      fontSize: theme.fontSizes.md,
+      fontWeight: 'bold',
+    },
+
     form: {
-      flexDirection: 'column',
-      justifyContent: 'space-evenly',
+      marginTop: 48,
+      justifyContent: 'flex-start',
       alignItems: 'center',
       flex: 1,
     },
+
+    linkText: {
+      color: theme.colors.black,
+    },
+
+    linkButton: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 14,
+    },
+
+    link: {
+      color: theme.colors.accent[500],
+    },
   }));
+
+  const defaultTheme = useContext(ThemeContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -59,7 +82,7 @@ export const Login = (): JSX.Element => {
       <Text style={styles.title}>Welcome</Text>
       <Text style={styles.subTitle}>Login to continue</Text>
 
-      <View style={styles.form}>
+      <KeyboardAvoidingView style={styles.form} behavior="padding">
         <Input
           placeholder="E-mail Address"
           icon="email"
@@ -72,6 +95,7 @@ export const Login = (): JSX.Element => {
           autoCompleteType="email"
           onBlur={handleEmailBlur}
         />
+        <Spacing size={32} />
         <Input
           ref={passwordRef}
           placeholder="Password"
@@ -86,7 +110,18 @@ export const Login = (): JSX.Element => {
           autoCapitalize="none"
           autoCompleteType="off"
         />
-      </View>
+        <Spacing size={64} />
+        <Button rippleColor={defaultTheme.colors.primary[700]}>
+          <Text style={styles.text}>Login</Text>
+        </Button>
+        <Spacing size={8} />
+        <Text style={styles.linkText}>
+          Do not have an account?{' '}
+          <TouchableOpacity style={styles.linkButton}>
+            <Text style={styles.link}>Create one now</Text>
+          </TouchableOpacity>
+        </Text>
+      </KeyboardAvoidingView>
     </View>
   );
 };
