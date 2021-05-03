@@ -1,16 +1,30 @@
-import React, { useState, useCallback } from 'react';
-import { Text, View, FlatList, Dimensions } from 'react-native';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import React, { useCallback, useContext } from 'react';
+import {
+  Text,
+  View,
+  FlatList,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useStyle } from '../styles/Style';
-import { categories, tasks as inititalTasks } from '../services/fakeData';
+import { categories } from '../services/fakeData';
 import { Category } from '../components/Category';
 import { Task } from '../components/Task';
 import { FloatingActionButton } from '../components/FloatingActionButton';
 import { StackNavProps } from '../routes/MainRoutes';
+import { ThemeContext } from '../contexts/ThemeContext';
+import { useTasks } from '../hooks/useTasks';
+import { AuthContext } from '../contexts/AuthContext';
 
 const { width } = Dimensions.get('screen');
 
 export const Home = ({ navigation }: StackNavProps<'Home'>): JSX.Element => {
+  const defaultTheme = useContext(ThemeContext);
+  const { logout } = useContext(AuthContext);
+
   const styles = useStyle(theme => ({
     container: {
       flex: 1,
@@ -42,7 +56,7 @@ export const Home = ({ navigation }: StackNavProps<'Home'>): JSX.Element => {
     },
   }));
 
-  const [tasks, setTasks] = useState(inititalTasks);
+  const { tasks, setTasks, mutate } = useTasks();
 
   const handleTaskIndicatorPress = useCallback(
     (index: number) => {
@@ -55,15 +69,17 @@ export const Home = ({ navigation }: StackNavProps<'Home'>): JSX.Element => {
           : task,
       );
 
-      setTasks(newTasks);
+      mutate(newTasks, true);
     },
-    [tasks],
+    [tasks, mutate],
   );
 
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.heading}>Hello, Gustavo!</Text>
+        <TouchableOpacity onPress={logout}>
+          <Text style={styles.heading}>Hello, Gustavo!</Text>
+        </TouchableOpacity>
         <Text style={styles.subHeading}>Categories</Text>
         <FlatList
           style={{
@@ -91,28 +107,35 @@ export const Home = ({ navigation }: StackNavProps<'Home'>): JSX.Element => {
           )}
         />
         <Text style={styles.subHeading}>Today&apos;s tasks</Text>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingHorizontal: 32,
-            paddingVertical: 16,
-            width,
-          }}
-          ItemSeparatorComponent={() => (
-            <View style={{ width: '100%', height: 16 }} />
-          )}
-          data={tasks}
-          keyExtractor={item => item.id}
-          renderItem={({ item, index }) => (
-            <Task
-              task={item}
-              isOdd={index % 2 !== 0}
-              index={index}
-              onIndicatorPress={handleTaskIndicatorPress}
-            />
-          )}
-        />
+        {tasks ? (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingHorizontal: 32,
+              paddingVertical: 16,
+              width,
+            }}
+            ItemSeparatorComponent={() => (
+              <View style={{ width: '100%', height: 16 }} />
+            )}
+            data={tasks}
+            keyExtractor={item => item.id}
+            renderItem={({ item, index }) => (
+              <Task
+                task={item}
+                isOdd={index % 2 !== 0}
+                index={index}
+                onIndicatorPress={handleTaskIndicatorPress}
+              />
+            )}
+          />
+        ) : (
+          <ActivityIndicator
+            size="large"
+            color={defaultTheme.colors.accent[500]}
+          />
+        )}
       </View>
       <FloatingActionButton onPress={() => navigation.navigate('CreateTask')} />
     </>

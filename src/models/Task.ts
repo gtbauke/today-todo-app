@@ -5,3 +5,5 @@ export interface Task {
   dueDate: Date;
   completed: boolean;
 }
+
+// TODO: add categories
