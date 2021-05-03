@@ -10,7 +10,7 @@ interface TaskProps {
   task: TaskModel;
   isOdd: boolean;
   index: number;
-  onIndicatorPress: (index: number) => void;
+  onIndicatorPress: (id: string) => void;
 }
 
 export const Task = ({
@@ -57,7 +57,7 @@ export const Task = ({
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.indicator}
-        onPress={() => onIndicatorPress(index)}
+        onPress={() => onIndicatorPress(task.id)}
       >
         {task.completed && (
           <Feather name="check" size={20} style={styles.icon} />

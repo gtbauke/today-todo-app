@@ -56,23 +56,7 @@ export const Home = ({ navigation }: StackNavProps<'Home'>): JSX.Element => {
     },
   }));
 
-  const { tasks, setTasks, mutate } = useTasks();
-
-  const handleTaskIndicatorPress = useCallback(
-    (index: number) => {
-      const newTasks = tasks.map((task, i) =>
-        index === i
-          ? {
-              ...task,
-              completed: !task.completed,
-            }
-          : task,
-      );
-
-      mutate(newTasks, true);
-    },
-    [tasks, mutate],
-  );
+  const [tasks, setTasks] = useTasks();
 
   return (
     <>
@@ -126,7 +110,9 @@ export const Home = ({ navigation }: StackNavProps<'Home'>): JSX.Element => {
                 task={item}
                 isOdd={index % 2 !== 0}
                 index={index}
-                onIndicatorPress={handleTaskIndicatorPress}
+                onIndicatorPress={id => {
+                  console.log(id);
+                }}
               />
             )}
           />
