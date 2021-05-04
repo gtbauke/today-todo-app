@@ -19,7 +19,7 @@ import { useStyle } from '../styles/Style';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 interface Props {
-  icon: 'email' | 'eye' | 'eye-off';
+  icon?: 'email' | 'eye' | 'eye-off' | 'none';
   onIconPress?: () => void;
 }
 
@@ -30,13 +30,14 @@ const animationDuration = 150;
 export const Input = forwardRef<TextInput, InputProps>(
   (
     {
-      icon,
+      icon = 'none',
       onIconPress,
       onFocus,
       onBlur,
       value,
       onChangeText,
       placeholder,
+      multiline,
       ...rest
     },
     ref,
@@ -52,7 +53,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       input: {
         backgroundColor: '#fff',
         width: '90%',
-        height: 48,
+        height: multiline ? 'auto' : 48,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
@@ -62,8 +63,6 @@ export const Input = forwardRef<TextInput, InputProps>(
         borderBottomWidth: 2,
         paddingHorizontal: 8,
         position: 'relative',
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
         elevation: 3,
       },
 
@@ -133,21 +132,22 @@ export const Input = forwardRef<TextInput, InputProps>(
           onChangeText={onChangeText}
           {...rest}
         />
-        {icon !== 'email' ? (
-          <TouchableOpacity onPress={onIconPress}>
+        {icon !== 'none' &&
+          (icon !== 'email' ? (
+            <TouchableOpacity onPress={onIconPress}>
+              <MaterialCommunityIcons
+                name={icon as any}
+                style={styles.icon}
+                size={28}
+              />
+            </TouchableOpacity>
+          ) : (
             <MaterialCommunityIcons
               name={icon as any}
               style={styles.icon}
               size={28}
             />
-          </TouchableOpacity>
-        ) : (
-          <MaterialCommunityIcons
-            name={icon as any}
-            style={styles.icon}
-            size={28}
-          />
-        )}
+          ))}
       </View>
     );
   },
