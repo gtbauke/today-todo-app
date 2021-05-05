@@ -45,7 +45,6 @@ export const Input = forwardRef<TextInput, InputProps>(
     const defaultTheme = useContext(ThemeContext);
 
     const [isFocused, setIsFocused] = useState(false);
-    const placeholderLeft = useSharedValue(8);
     const placeholderTop = useSharedValue(8);
     const placeholderSize = useSharedValue(defaultTheme.fontSizes.md);
 
@@ -80,12 +79,12 @@ export const Input = forwardRef<TextInput, InputProps>(
 
       placeholder: {
         position: 'absolute',
+        left: 8,
         color: isFocused ? theme.colors.gray[900] : theme.colors.gray[200],
       },
     }));
 
     const placeholderStyles = useAnimatedStyle(() => ({
-      left: placeholderLeft.value,
       top: placeholderTop.value,
       fontSize: placeholderSize.value,
     }));
@@ -93,7 +92,6 @@ export const Input = forwardRef<TextInput, InputProps>(
     const handleInputFocus = (
       event: NativeSyntheticEvent<TextInputFocusEventData>,
     ) => {
-      placeholderLeft.value = withTiming(4, { duration: animationDuration });
       placeholderTop.value = withTiming(4, { duration: animationDuration });
       placeholderSize.value = withTiming(10, {
         duration: animationDuration,
@@ -107,7 +105,6 @@ export const Input = forwardRef<TextInput, InputProps>(
       event: NativeSyntheticEvent<TextInputFocusEventData>,
     ) => {
       if (!value) {
-        placeholderLeft.value = withTiming(8, { duration: animationDuration });
         placeholderTop.value = withTiming(8, { duration: animationDuration });
         placeholderSize.value = withTiming(defaultTheme.fontSizes.md, {
           duration: animationDuration,

@@ -1,6 +1,6 @@
 export interface Category {
   id: string;
   name: string;
-  taskCount: number;
+  tasks: number;
   completedTasks: number;
 }

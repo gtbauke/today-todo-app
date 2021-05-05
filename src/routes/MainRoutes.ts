@@ -1,8 +1,10 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { Task } from '../models/Task';
+
 export type StackParamList = {
-  Home: undefined;
+  Home: { shouldRefresh?: boolean };
   Task: undefined; // ?: change this later
   CreateTask: undefined;
 };

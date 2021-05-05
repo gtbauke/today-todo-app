@@ -17,6 +17,7 @@ interface UseCategoriesResponse {
   categories: Category[];
   setCategories: Dispatch<SetStateAction<Category[]>>;
   mutate: MutateDispatch<Category[]>;
+  refresh: () => void;
 }
 
 export const useCategories = (): UseCategoriesResponse => {
@@ -65,5 +66,9 @@ export const useCategories = (): UseCategoriesResponse => {
     [state, _fetch],
   );
 
-  return { categories: state, setCategories: set, mutate };
+  const refresh = useCallback(() => {
+    _fetch();
+  }, [_fetch]);
+
+  return { categories: state, setCategories: set, mutate, refresh };
 };

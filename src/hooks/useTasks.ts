@@ -11,6 +11,7 @@ interface UseTasksResponse {
   setTasks: Dispatch<React.SetStateAction<Task[]>>;
   mutate: (newData: Task[], update: boolean) => void;
   mutateSingle: (newData: Task, update: boolean) => void;
+  refresh: () => void;
 }
 
 export const useTasks = (): UseTasksResponse => {
@@ -98,5 +99,9 @@ export const useTasks = (): UseTasksResponse => {
     [state, set, _fetch],
   );
 
-  return { tasks: state, setTasks: set, mutate, mutateSingle };
+  const refresh = useCallback(() => {
+    _fetch();
+  }, [_fetch]);
+
+  return { tasks: state, setTasks: set, mutate, mutateSingle, refresh };
 };

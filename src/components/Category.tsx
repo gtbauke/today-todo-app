@@ -3,23 +3,24 @@ import { Text, View } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 import { useStyle } from '../styles/Style';
+import { Category as CategoryModel } from '../models/Category';
 
 interface CategoryProps {
-  name: string;
-  tasks: number;
-  completedTasks: number;
+  category: CategoryModel;
   isOdd: boolean;
+  isSelected: boolean;
+  onPress: () => void;
 }
 
 export const Category = ({
-  name,
-  tasks,
-  completedTasks,
+  category,
   isOdd,
+  isSelected,
+  onPress,
 }: CategoryProps): JSX.Element => {
   const styles = useStyle(theme => ({
     container: {
-      backgroundColor: '#fff',
+      backgroundColor: isSelected ? '#fff' : '#f6f6f6',
       elevation: 3,
       height: 125,
       width: 250,
@@ -50,7 +51,7 @@ export const Category = ({
     },
 
     progress: {
-      width: `${(100 * completedTasks) / tasks}%`,
+      width: `${(100 * category.completedTasks) / category.tasks}%`,
       height: '100%',
       borderRadius: 100,
       backgroundColor: isOdd
@@ -62,12 +63,13 @@ export const Category = ({
   return (
     <TouchableNativeFeedback
       style={styles.container}
+      onPress={onPress}
       background={TouchableNativeFeedback.Ripple('#f7f7f7', false)}
     >
       <Text style={styles.taskCount}>
-        {tasks} {tasks === 1 ? 'Task' : 'Tasks'}
+        {category.tasks} {category.tasks === 1 ? 'Task' : 'Tasks'}
       </Text>
-      <Text style={styles.title}>{name}</Text>
+      <Text style={styles.title}>{category.name}</Text>
       <View style={styles.progressBar}>
         <View style={styles.progress} />
       </View>

@@ -9,7 +9,6 @@ import { useStyle } from '../styles/Style';
 interface TaskProps {
   task: TaskModel;
   isOdd: boolean;
-  index: number;
   onIndicatorPress: (id: string) => void;
 }
 
@@ -17,14 +16,13 @@ export const Task = ({
   task,
   isOdd,
   onIndicatorPress,
-  index,
 }: TaskProps): JSX.Element => {
   const styles = useStyle(theme => ({
     container: {
       width: '100%',
       height: 80,
       borderRadius: 10,
-      backgroundColor: '#fff',
+      backgroundColor: task.completed ? '#f6f6f6' : '#fff',
       elevation: 3,
       paddingVertical: 8,
       paddingHorizontal: 16,
@@ -50,6 +48,7 @@ export const Task = ({
 
     text: {
       fontSize: theme.fontSizes.md,
+      textDecorationLine: task.completed ? 'line-through' : 'none',
     },
   }));
 

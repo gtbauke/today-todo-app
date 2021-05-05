@@ -1,17 +1,24 @@
-import React, { useRef, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import React, { useCallback, useRef, useState } from 'react';
 import { View, Text, TextInput, Platform, FlatList } from 'react-native';
 import DatePicker, { Event } from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useStyle } from '../styles/Style';
 import { formatDate } from '../utils/date';
 import { useCategories } from '../hooks/useCategories';
 import { SelectableCategory } from '../components/SelectableCategory';
 import { FloatingActionButton } from '../components/FloatingActionButton';
+import { api } from '../services/api';
+import { StackNavProps } from '../routes/MainRoutes';
+import { Task } from '../models/Task';
 
 type OnDateChangeType = (event: Event, date: Date | undefined) => void;
 
-export const CreateTask = (): JSX.Element => {
+export const CreateTask = ({
+  navigation,
+}: StackNavProps<'CreateTask'>): JSX.Element => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
@@ -48,7 +55,7 @@ export const CreateTask = (): JSX.Element => {
 
     divider: {
       width: '30%',
-      height: 4,
+      height: 2,
       backgroundColor: theme.colors.gray[200],
       marginHorizontal: 32,
     },
@@ -104,6 +111,32 @@ export const CreateTask = (): JSX.Element => {
     const newData = [...selectedCategories, id];
     setSelectedCategories(newData);
   };
+
+  const handleTaskCreation = useCallback(async () => {
+    const token = (await AsyncStorage.getItem('@token')) || '';
+    const { status, data } = await api.post(
+      '/tasks',
+      {
+        title,
+        description,
+        dueTo: date.toISOString(),
+        categories: selectedCategories.map(
+          id => categories.find(c => c.id === id)!.name,
+        ),
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (status !== 201) {
+      console.log(data);
+    }
+
+    navigation.navigate('Home', { shouldRefresh: true });
+  }, [title, description, date, categories, selectedCategories, navigation]);
 
   return (
     <View style={styles.container}>
@@ -177,7 +210,7 @@ export const CreateTask = (): JSX.Element => {
         )}
       />
 
-      <FloatingActionButton onPress={() => console.log('Task created')} />
+      <FloatingActionButton onPress={handleTaskCreation} />
     </View>
   );
 };
