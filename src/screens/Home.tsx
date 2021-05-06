@@ -38,7 +38,7 @@ export const Home = ({
   const defaultTheme = useContext(ThemeContext);
   const { logout } = useContext(AuthContext);
 
-  const { tasks, setTasks, mutate, mutateSingle, refresh } = useTasks();
+  const { tasks, mutateSingle, refresh } = useTasks();
   const {
     categories,
     setCategories,
@@ -159,12 +159,23 @@ export const Home = ({
     );
   }, [categories, tasks, selectedCategories]);
 
+  const categoriesToShow = useMemo(() => {
+    return [
+      ...categories,
+      { id: 'add-card', name: 'add-card', tasks: 0, completedTasks: 0 },
+    ];
+  }, [categories]);
+
   const handleTaskPress = useCallback(
     (id: string) => {
       navigation.navigate('Task', { taskId: id });
     },
     [navigation],
   );
+
+  const handleAddCategory = useCallback(() => {
+    navigation.navigate('CreateCategory');
+  }, [navigation]);
 
   return (
     <>
@@ -187,19 +198,29 @@ export const Home = ({
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          data={categories}
+          data={categoriesToShow}
           keyExtractor={item => item.id}
           ItemSeparatorComponent={() => (
             <View style={{ width: 24, height: '100%' }} />
           )}
-          renderItem={({ item, index }) => (
-            <Category
-              onPress={() => handleCategoryPress(item.id)}
-              category={item}
-              isOdd={index % 2 !== 0}
-              isSelected={selectedCategories.includes(item.id)}
-            />
-          )}
+          renderItem={({ item, index }) =>
+            item.id === 'add-card' ? (
+              <Category
+                onPress={handleAddCategory}
+                category={item}
+                isOdd={false}
+                isSelected={false}
+                addCard
+              />
+            ) : (
+              <Category
+                onPress={() => handleCategoryPress(item.id)}
+                category={item}
+                isOdd={index % 2 !== 0}
+                isSelected={selectedCategories.includes(item.id)}
+              />
+            )
+          }
         />
         <Text style={styles.subHeading}>Today&apos;s tasks</Text>
         {tasks ? (

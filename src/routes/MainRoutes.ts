@@ -1,12 +1,11 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { Task } from '../models/Task';
-
 export type StackParamList = {
   Home: { shouldRefresh?: boolean };
   Task: { taskId: string };
   CreateTask: undefined;
+  CreateCategory: undefined;
 };
 
 export type StackNavProps<T extends keyof StackParamList> = {

@@ -43,7 +43,7 @@ export const Header = ({
 
   return (
     <View style={styles.container}>
-      {scene.route.name === 'Task' ? (
+      {scene.route.name === 'Task' || scene.route.name === 'CreateCategory' ? (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Feather name="arrow-left" style={styles.icon} size={24} />
         </TouchableOpacity>

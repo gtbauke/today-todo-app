@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
 import { Text, View } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
@@ -10,6 +11,7 @@ interface CategoryProps {
   isOdd: boolean;
   isSelected: boolean;
   onPress: () => void;
+  addCard?: boolean;
 }
 
 export const Category = ({
@@ -17,6 +19,7 @@ export const Category = ({
   isOdd,
   isSelected,
   onPress,
+  addCard = false,
 }: CategoryProps): JSX.Element => {
   const styles = useStyle(theme => ({
     container: {
@@ -59,6 +62,21 @@ export const Category = ({
         : theme.colors.primary[500],
     },
   }));
+
+  if (addCard) {
+    return (
+      <TouchableNativeFeedback
+        style={[
+          styles.container,
+          { alignItems: 'center', justifyContent: 'center' },
+        ]}
+        onPress={onPress}
+        background={TouchableNativeFeedback.Ripple('#f7f7f7', false)}
+      >
+        <Text style={styles.title}>Add category</Text>
+      </TouchableNativeFeedback>
+    );
+  }
 
   return (
     <TouchableNativeFeedback

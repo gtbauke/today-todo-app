@@ -9,6 +9,7 @@ import { Home } from '../screens/Home';
 import { Task } from '../screens/Task';
 import { CreateTask } from '../screens/CreateTask';
 import { AuthContext } from '../contexts/AuthContext';
+import { CreateCategory } from '../screens/CreateCategory';
 
 const StackNavigator = createStackNavigator<StackParamList>();
 
@@ -32,6 +33,10 @@ export const Routes = (): JSX.Element => {
             options={{
               header: props => <CreateTaskHeader {...props} />,
             }}
+          />
+          <StackNavigator.Screen
+            name="CreateCategory"
+            component={CreateCategory}
           />
         </StackNavigator.Navigator>
       ) : (
