@@ -6,7 +6,7 @@ import { AuthStack } from './AuthStack';
 import { StackParamList } from './MainRoutes';
 import { Header, CreateTaskHeader } from '../components/Header';
 import { Home } from '../screens/Home';
-import { Task } from '../components/Task';
+import { Task } from '../screens/Task';
 import { CreateTask } from '../screens/CreateTask';
 import { AuthContext } from '../contexts/AuthContext';
 

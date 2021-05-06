@@ -2,9 +2,7 @@ export interface Task {
   id: string;
   title: string;
   description: string;
-  dueDate: Date;
+  dueTo: string;
   completed: boolean;
   categories: string[];
 }
-
-// TODO: add categories

@@ -3,6 +3,7 @@ import React, { createContext, useState, useMemo, useEffect } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 import { auth, AuthResponse, LoginResponse } from '../services/AuthService';
+import { keys } from '../utils/keys';
 
 interface IAuthContext {
   isSigned: boolean;
@@ -22,7 +23,7 @@ export const AuthContextProvider = ({
   children: React.ReactNode;
 }): JSX.Element => {
   const [userToken, setUserToken] = useState('');
-  const { setItem, getItem } = useAsyncStorage('@token');
+  const { setItem, getItem } = useAsyncStorage(keys.token);
 
   const authContext = useMemo<IAuthContext>(
     () => ({

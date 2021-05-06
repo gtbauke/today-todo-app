@@ -6,7 +6,10 @@ import { Feather } from '@expo/vector-icons';
 
 import { useStyle } from '../styles/Style';
 
-export const Header = (props: StackHeaderProps): JSX.Element => {
+export const Header = ({
+  scene,
+  navigation,
+}: StackHeaderProps): JSX.Element => {
   const styles = useStyle(theme => ({
     container: {
       backgroundColor: theme.colors.white,
@@ -40,9 +43,15 @@ export const Header = (props: StackHeaderProps): JSX.Element => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
-        <Feather name="menu" style={styles.icon} size={24} />
-      </TouchableOpacity>
+      {scene.route.name === 'Task' ? (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Feather name="arrow-left" style={styles.icon} size={24} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity>
+          <Feather name="menu" style={styles.icon} size={24} />
+        </TouchableOpacity>
+      )}
       <View style={styles.iconGroup}>
         <TouchableOpacity>
           <Feather name="search" style={styles.icon} size={24} />

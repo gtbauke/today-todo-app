@@ -27,6 +27,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { User } from '../models/User';
 import { api } from '../services/api';
 import { useCategories } from '../hooks/useCategories';
+import { keys } from '../utils/keys';
 
 const { width } = Dimensions.get('screen');
 
@@ -37,10 +38,19 @@ export const Home = ({
   const defaultTheme = useContext(ThemeContext);
   const { logout } = useContext(AuthContext);
 
+  const { tasks, setTasks, mutate, mutateSingle, refresh } = useTasks();
+  const {
+    categories,
+    setCategories,
+    refresh: refreshCategories,
+  } = useCategories();
+
   const [user, setUser] = useState<User>();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isCategoriesRefreshing, setIsCategoriesRefreshing] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(() =>
+    categories.map(c => c.id),
+  );
 
   const styles = useStyle(theme => ({
     container: {
@@ -72,13 +82,6 @@ export const Home = ({
       marginLeft: 16,
     },
   }));
-
-  const { tasks, setTasks, mutate, mutateSingle, refresh } = useTasks();
-  const {
-    categories,
-    setCategories,
-    refresh: refreshCategories,
-  } = useCategories();
 
   const handleTaskIndicatorPress = (id: string) => {
     const data = tasks.find(t => t.id === id);
@@ -120,7 +123,7 @@ export const Home = ({
   );
 
   useEffect(() => {
-    AsyncStorage.getItem('@token').then(t => {
+    AsyncStorage.getItem(keys.token).then(t => {
       const token = t || '';
 
       api
@@ -155,6 +158,13 @@ export const Home = ({
         t.categories.some(name => mappedTasks.includes(name)),
     );
   }, [categories, tasks, selectedCategories]);
+
+  const handleTaskPress = useCallback(
+    (id: string) => {
+      navigation.navigate('Task', { taskId: id });
+    },
+    [navigation],
+  );
 
   return (
     <>
@@ -213,6 +223,7 @@ export const Home = ({
                 task={item}
                 isOdd={index % 2 !== 0}
                 onIndicatorPress={handleTaskIndicatorPress}
+                onPress={() => handleTaskPress(item.id)}
               />
             )}
           />

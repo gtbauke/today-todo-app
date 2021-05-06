@@ -5,6 +5,7 @@ import { Dispatch, useCallback, useEffect, useState } from 'react';
 import { Task } from '../models/Task';
 import { api } from '../services/api';
 import { compare } from '../utils/compare';
+import { keys } from '../utils/keys';
 
 interface UseTasksResponse {
   tasks: Task[];
@@ -18,7 +19,7 @@ export const useTasks = (): UseTasksResponse => {
   const [state, set] = useState<Task[]>([]);
 
   const _fetch = useCallback(async () => {
-    const token = (await AsyncStorage.getItem('@token')) || '';
+    const token = (await AsyncStorage.getItem(keys.token)) || '';
     const { status, data } = await api.get('/tasks', {
       headers: { authorization: `Bearer ${token}` },
     });
@@ -39,7 +40,7 @@ export const useTasks = (): UseTasksResponse => {
         const diff = compare(state, newData);
 
         diff.update.forEach(async task => {
-          const token = (await AsyncStorage.getItem('@token')) || '';
+          const token = (await AsyncStorage.getItem(keys.token)) || '';
           const { status, data } = await api.put(`/tasks/${task.id}`, task, {
             headers: {
               authorization: `Bearer ${token}`,
@@ -52,7 +53,7 @@ export const useTasks = (): UseTasksResponse => {
         });
 
         diff.delete.forEach(async task => {
-          const token = (await AsyncStorage.getItem('@token')) || '';
+          const token = (await AsyncStorage.getItem(keys.token)) || '';
           const { status, data } = await api.delete(`/tasks/${task.id}`, {
             headers: {
               authorization: `Bearer ${token}`,
@@ -74,7 +75,7 @@ export const useTasks = (): UseTasksResponse => {
     (newData: Task, update = false) => {
       if (update) {
         const _update = async () => {
-          const token = (await AsyncStorage.getItem('@token')) || '';
+          const token = (await AsyncStorage.getItem(keys.token)) || '';
           const { status, data } = await api.put(
             `/tasks/${newData.id}`,
             newData,

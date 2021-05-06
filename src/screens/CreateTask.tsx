@@ -13,6 +13,7 @@ import { FloatingActionButton } from '../components/FloatingActionButton';
 import { api } from '../services/api';
 import { StackNavProps } from '../routes/MainRoutes';
 import { Task } from '../models/Task';
+import { keys } from '../utils/keys';
 
 type OnDateChangeType = (event: Event, date: Date | undefined) => void;
 
@@ -54,9 +55,9 @@ export const CreateTask = ({
     },
 
     divider: {
-      width: '30%',
+      width: '20%',
       height: 2,
-      backgroundColor: theme.colors.gray[200],
+      backgroundColor: theme.colors.primary[500],
       marginHorizontal: 32,
     },
 
@@ -113,7 +114,7 @@ export const CreateTask = ({
   };
 
   const handleTaskCreation = useCallback(async () => {
-    const token = (await AsyncStorage.getItem('@token')) || '';
+    const token = (await AsyncStorage.getItem(keys.token)) || '';
     const { status, data } = await api.post(
       '/tasks',
       {

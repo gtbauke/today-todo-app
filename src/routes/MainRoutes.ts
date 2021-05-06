@@ -5,7 +5,7 @@ import { Task } from '../models/Task';
 
 export type StackParamList = {
   Home: { shouldRefresh?: boolean };
-  Task: undefined; // ?: change this later
+  Task: { taskId: string };
   CreateTask: undefined;
 };
 

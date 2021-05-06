@@ -10,6 +10,7 @@ import {
 import { Category } from '../models/Category';
 import { api } from '../services/api';
 import { compare } from '../utils/compare';
+import { keys } from '../utils/keys';
 
 type MutateDispatch<Model> = (newData: Model, update: boolean) => void;
 
@@ -24,7 +25,7 @@ export const useCategories = (): UseCategoriesResponse => {
   const [state, set] = useState<Category[]>([]);
 
   const _fetch = useCallback(async () => {
-    const token = (await AsyncStorage.getItem('@token')) || '';
+    const token = (await AsyncStorage.getItem(keys.token)) || '';
     const { status, data } = await api.get('/categories', {
       headers: { authorization: `Bearer ${token}` },
     });
@@ -45,7 +46,7 @@ export const useCategories = (): UseCategoriesResponse => {
         const diff = compare(state, newData);
 
         diff.delete.forEach(async category => {
-          const token = (await AsyncStorage.getItem('@token')) || '';
+          const token = (await AsyncStorage.getItem(keys.token)) || '';
           const { status, data } = await api.delete(
             `/categories/${category.id}`,
             {
