@@ -2,7 +2,12 @@
 import React, { createContext, useState, useMemo, useEffect } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
-import { auth, AuthResponse, LoginResponse } from '../services/AuthService';
+import {
+  auth,
+  AuthResponse,
+  LoginResponse,
+  SignupResponse,
+} from '../services/AuthService';
 import { keys } from '../utils/keys';
 
 interface IAuthContext {
@@ -12,7 +17,11 @@ interface IAuthContext {
     password: string;
   }) => Promise<AuthResponse<LoginResponse>>;
   logout: () => Promise<void>;
-  // TODO: add signup
+  signup: (data: {
+    email: string;
+    name: string;
+    password: string;
+  }) => Promise<AuthResponse<SignupResponse>>;
 }
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -46,6 +55,16 @@ export const AuthContextProvider = ({
       logout: async () => {
         await setItem('');
         setUserToken('');
+      },
+
+      signup: async signupData => {
+        const { errors, data } = await auth.signup(
+          signupData.email,
+          signupData.name,
+          signupData.password,
+        );
+
+        return { errors, data };
       },
     }),
     [setItem, userToken],

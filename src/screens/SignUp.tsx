@@ -18,7 +18,7 @@ import { Spacing } from '../components/Spacing';
 import { AuthContext } from '../contexts/AuthContext';
 import { AuthNavProps } from '../routes/AuthStack';
 
-export const Login = ({ navigation }: AuthNavProps<'Login'>): JSX.Element => {
+export const Signup = ({ navigation }: AuthNavProps<'SignUp'>): JSX.Element => {
   const styles = useStyle(theme => ({
     container: {
       marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
@@ -71,19 +71,26 @@ export const Login = ({ navigation }: AuthNavProps<'Login'>): JSX.Element => {
   const defaultTheme = useContext(ThemeContext);
 
   const [showPassword, setShowPassword] = useState(false);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
 
+  const nameRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
 
-  const { login } = useContext(AuthContext);
+  const { signup } = useContext(AuthContext);
 
   const handleEmailBlur = () => {
+    nameRef.current?.focus();
+  };
+
+  const handleNameBlur = () => {
     passwordRef.current?.focus();
   };
 
-  const handleLogin = async () => {
-    const { data, errors } = await login({ email, password });
+  const handleSignup = async () => {
+    const { data, errors } = await signup({ email, name, password });
 
     if (errors) {
       console.log(errors);
@@ -91,13 +98,14 @@ export const Login = ({ navigation }: AuthNavProps<'Login'>): JSX.Element => {
 
     if (data) {
       console.log(data);
+      navigation.navigate('Login');
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome</Text>
-      <Text style={styles.subTitle}>Login to continue</Text>
+      <Text style={styles.subTitle}>Signup to continue</Text>
 
       <KeyboardAvoidingView style={styles.form} behavior="padding">
         <Input
@@ -111,6 +119,19 @@ export const Login = ({ navigation }: AuthNavProps<'Login'>): JSX.Element => {
           autoCapitalize="none"
           autoCompleteType="email"
           onBlur={handleEmailBlur}
+        />
+        <Spacing size={32} />
+        <Input
+          ref={nameRef}
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
+          keyboardType="ascii-capable"
+          returnKeyType="next"
+          autoCorrect={false}
+          autoCapitalize="words"
+          autoCompleteType="name"
+          onBlur={handleNameBlur}
         />
         <Spacing size={32} />
         <Input
@@ -130,18 +151,18 @@ export const Login = ({ navigation }: AuthNavProps<'Login'>): JSX.Element => {
         <Spacing size={64} />
         <Button
           rippleColor={defaultTheme.colors.primary[700]}
-          onPress={handleLogin}
+          onPress={handleSignup}
         >
-          <Text style={styles.text}>Login</Text>
+          <Text style={styles.text}>Signup</Text>
         </Button>
         <Spacing size={8} />
         <Text style={styles.linkText}>
-          Do not have an account?{' '}
+          Already have an account?{' '}
           <TouchableOpacity
             style={styles.linkButton}
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('Login')}
           >
-            <Text style={styles.link}>Create one now</Text>
+            <Text style={styles.link}>Login Now</Text>
           </TouchableOpacity>
         </Text>
       </KeyboardAvoidingView>
